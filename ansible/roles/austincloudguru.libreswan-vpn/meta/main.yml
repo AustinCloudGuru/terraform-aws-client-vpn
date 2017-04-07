@@ -1,0 +1,38 @@
+galaxy_info:
+  author: Mark Honomichl
+  description: Installs a LibreSwan VPN server
+  company: AustinCloudGuru
+  license: MIT
+  min_ansible_version: 2.0
+  platforms:
+  #- name: Amazon
+  #  versions:
+  #  - all
+  #- name: Ubuntu
+  #  versions:
+  #  - all
+  #  - lucid
+  #  - maverick
+  #  - natty
+  #  - oneiric
+  #  - precise
+  #  - quantal
+  #  - raring
+  #  - saucy
+  #  - trusty
+  #  - utopic
+  #  - vivid
+  #  - wily
+  #  - xenial
+  #  - yakkety
+  - name: EL
+    versions:
+  #  - all
+  #  - 5
+  #  - 6
+    - 7
+  galaxy_tags:  
+    - libreswan
+    - vpn
+
+dependencies: []

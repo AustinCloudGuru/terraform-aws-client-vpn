@@ -1,0 +1,125 @@
+---
+- name: Check if EPEL repo is already configured.
+  stat: path={{ epel_repofile_path }}
+  register: epel_repofile_result
+
+- name: Install EPEL repo.
+  yum:
+    name: "{{ epel_repo_url }}"
+    state: present
+  register: result
+  when: not epel_repofile_result.stat.exists
+
+- name: Import EPEL GPG key.
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  when: not epel_repofile_result.stat.exists
+
+- name: Install Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ vpn_packages }}"
+
+- name: Create ipsec.conf file
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create psk.secrets file
+  template:
+    src: psk.secrets.j2
+    dest: /etc/ipsec.d/psk.secrets
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create xl2tpd config file
+  template:
+    src: xl2tpd.conf.j2
+    dest: /etc/xl2tpd/xl2tpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create xl2tpd options file
+  template:
+    src: options.xl2tpd.j2
+    dest: /etc/ppp/options.xl2tpd
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create chap secrets file
+  template:
+    src: chap-secrets.j2
+    dest: /etc/ppp/chap-secrets
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create ipsec passwd file
+  template:
+    src: passwd.j2
+    dest: /etc/ipsec.d/passwd
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Copy fail2ban
+  copy:
+    src: jail.local
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create iptables.rules restore file
+  template:
+    src: iptables.restore.j2
+    dest: /etc/iptables.restore
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - reload iptables
+
+- name: Recommended sysctl
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: no
+    ignoreerrors: yes
+  with_items: "{{ vpn_sysctl }}"
+  notify:
+    - reload sysctl.conf
+    - flush routes
+
+- name: Ensure fail2ban is running
+  service:
+    name: fail2ban
+    state: started
+    enabled: yes
+
+- name: Ensure ipsec is running
+  service:
+    name: ipsec
+    state: started
+    enabled: yes
+
+- name: Ensure xl2tpd is running
+  service:
+    name: xl2tpd
+    state: started
+    enabled: yes
+
+- name: Ensure iptables is running
+  service:
+    name: iptables
+    state: started
+    enabled: yes

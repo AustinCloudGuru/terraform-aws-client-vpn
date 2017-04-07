@@ -1,0 +1,9 @@
+# ansible-galaxy install -r requirements.yml
+
+# from galaxy
+- src: blackbaud.linux-hardening
+
+- name:    austincloudguru.libreswan-vpn
+  src:     git@github.com:austincloudguru/ansible-role-libreswan-vpn.git
+  scm:     git
+  version: master

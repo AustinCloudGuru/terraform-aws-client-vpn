@@ -1,0 +1,18 @@
+- hosts: vpn
+  remote_user: centos
+  become: True
+  vars:
+    vpn_ipsec_psk: DunkinDonutsCoffee
+    vpn_users:
+      - { 'username': 'mark.honomichl','password': 'p@ssw0rd', 'encpasswd': '$1$Y5dJ326/$yn0OIhIuA1K99Zsocwpyq.' }
+  roles:
+    - blackbaud.linux-hardening
+    - AustinCLoudGuru.libreswan-vpn
+
+  tasks:
+    - name: Configure Hostname
+      hostname:
+        name: "{{ inventory_hostname }}"
+    - name: Print Public IP Address
+      debug:
+        msg: 'The Public IP Address is {{ ansible_host }}'
