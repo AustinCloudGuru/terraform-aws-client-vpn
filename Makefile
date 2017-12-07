@@ -38,8 +38,6 @@ output: update ## Show outputs of a module or the entire state.
 destroy: init update ## Destroys targets
 	@terraform destroy -var-file=environments/$(PROJECT)/inputs.tfvars
 
-
-
 ansible:  ## Run the Ansible
 	@cd ansible;ansible-galaxy install -r requirements.yml --force
 	@cd ansible;ansible-playbook playbook.yml
