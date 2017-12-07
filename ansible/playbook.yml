@@ -6,7 +6,7 @@
     vpn_users:
       - { 'username': 'mark.honomichl','password': 'p@ssw0rd', 'encpasswd': '$1$Y5dJ326/$yn0OIhIuA1K99Zsocwpyq.' }
   roles:
-    - blackbaud.linux-hardening
+    #- blackbaud.linux-hardening
     - AustinCLoudGuru.libreswan-vpn
 
   tasks:
