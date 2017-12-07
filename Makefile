@@ -10,7 +10,7 @@ init: ## Initializes the terraform remote state backend and pulls the correct en
 	@terraform init \
         -backend-config="bucket=${BUCKET}" \
         -backend-config="key=terraform/terraform-aws-client-vpn.tfstate" \
-        -backend-config="region=us-east-1"
+        -backend-config="region=${AWS_REGION}"
 
 update: ## Gets any module updates
 	@terraform get -update=true &>/dev/null

@@ -6,6 +6,6 @@ variable "aws-base-bucket" {}
 variable "aws-base-state-file" {}
 
 # Apps Subnets
-variable "vpn-1a_subnet_cidr" {}
+variable "vpn-1_subnet_cidr" {}
 
-variable "nat-gw-1a" {default=0}
+variable "nat-gw-1" {default=0}
