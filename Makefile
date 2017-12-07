@@ -1,4 +1,4 @@
-.PHONY: help
+.PHONY: help ansible
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -38,9 +38,7 @@ output: update ## Show outputs of a module or the entire state.
 destroy: init update ## Destroys targets
 	@terraform destroy -var-file=environments/$(PROJECT)/inputs.tfvars
 
-ansible-check:  ## Check the Ansible
-	@cd ansible;ansible-galaxy install -r requirements.yml --force
-	@cd ansible;ansible-playbook playbook.yml --check
+
 
 ansible:  ## Run the Ansible
 	@cd ansible;ansible-galaxy install -r requirements.yml --force
